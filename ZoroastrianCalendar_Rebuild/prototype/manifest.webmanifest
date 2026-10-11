@@ -1,0 +1,13 @@
+{
+  "name": "گاه‌شمار زرتشتی",
+  "short_name": "گاه‌شمار",
+  "description": "نمونه تعاملی بازسازی گاه‌شمار زرتشتی",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#101817",
+  "theme_color": "#101817",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

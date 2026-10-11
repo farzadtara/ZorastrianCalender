@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#101817" />
+    <meta name="description" content="نمونه تعاملی بازسازی گاه‌شمار زرتشتی" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="app.css" />
+    <title>گاه‌شمار زرتشتی</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="brand-mark" aria-hidden="true">ز</div>
+        <div class="brand-copy">
+          <p class="eyebrow">گاه‌شمار زرتشتی</p>
+          <h1 id="screen-title">تقویم</h1>
+        </div>
+        <button class="icon-button" id="today-button" type="button" aria-label="رفتن به امروز" title="امروز">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v3m10-3v3M4.5 9h15M6 5h12a1.5 1.5 0 0 1 1.5 1.5v12A1.5 1.5 0 0 1 18 20H6a1.5 1.5 0 0 1-1.5-1.5v-12A1.5 1.5 0 0 1 6 5Z" /></svg>
+        </button>
+      </header>
+
+      <main id="main-content">
+        <section class="screen active" id="screen-calendar" aria-labelledby="calendar-heading">
+          <div class="screen-intro">
+            <div>
+              <p class="eyebrow">امروز در یک نگاه</p>
+              <h2 id="calendar-heading">تقویم</h2>
+            </div>
+            <span class="status-pill"><span class="status-dot"></span> نمونه تعاملی</span>
+          </div>
+
+          <aside class="notice" id="data-notice" role="note">
+            <span class="notice-icon" aria-hidden="true">i</span>
+            <p>نام روزها و مناسبت‌ها از داده قدیمی آمده‌اند؛ سال و قواعد تقویم هنوز تأیید نشده‌اند.</p>
+          </aside>
+
+          <section class="date-hero" aria-label="تاریخ انتخاب‌شده">
+            <div class="hero-topline">
+              <span>تاریخ شمسی</span>
+              <span class="profile-tag">پروفایل در دست بررسی</span>
+            </div>
+            <div class="hero-date" id="hero-persian-date">—</div>
+            <div class="hero-civil" id="hero-other-dates">—</div>
+            <div class="hero-divider"></div>
+            <div class="religious-day-row">
+              <div>
+                <span class="muted-label">نام روز در داده قدیمی</span>
+                <strong id="hero-zoro-day">—</strong>
+              </div>
+              <span class="nabur-badge" id="hero-nabur" hidden>نابور</span>
+            </div>
+            <p class="hero-event" id="hero-event" hidden></p>
+          </section>
+
+          <section class="calendar-panel" aria-label="نمای ماهانه">
+            <div class="month-toolbar">
+              <button class="month-arrow" type="button" data-month-step="-1" aria-label="ماه قبل">‹</button>
+              <div class="month-heading">
+                <h3 id="month-title">—</h3>
+                <span id="month-subtitle">تقویم شمسی</span>
+              </div>
+              <button class="month-arrow" type="button" data-month-step="1" aria-label="ماه بعد">›</button>
+            </div>
+            <div class="weekday-row" id="weekday-row" aria-hidden="true"></div>
+            <div class="calendar-grid" id="calendar-grid" role="group" aria-label="روزهای ماه"></div>
+            <div class="calendar-legend">
+              <span><i class="legend-dot event-dot"></i> مناسبت در داده قدیمی</span>
+              <span><i class="legend-dot nabur-dot"></i> نابور در داده قدیمی</span>
+            </div>
+          </section>
+
+          <section class="selected-day-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">جزئیات</p>
+                <h3 id="selected-day-title">روز انتخاب‌شده</h3>
+              </div>
+              <button class="text-button" id="selected-today-button" type="button">امروز</button>
+            </div>
+            <div id="selected-day-content" class="selected-day-content"></div>
+          </section>
+        </section>
+
+        <section class="screen" id="screen-events" aria-labelledby="events-heading" hidden>
+          <div class="screen-intro">
+            <div><p class="eyebrow">فهرست منبع قدیمی</p><h2 id="events-heading">مناسبت‌ها</h2></div>
+          </div>
+          <aside class="notice" role="note">
+            <span class="notice-icon" aria-hidden="true">i</span>
+            <p>این فهرست سال و قانون تکرار ندارد؛ بنابراین به‌عنوان «مناسبت‌های آینده» نمایش داده نمی‌شود.</p>
+          </aside>
+          <label class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.5 4.5" /></svg>
+            <input id="event-search" type="search" placeholder="جست‌وجوی نام مناسبت" autocomplete="off" />
+          </label>
+          <div class="filter-row" role="group" aria-label="فیلتر مناسبت‌ها">
+            <button type="button" class="filter-chip active" data-event-filter="all" aria-pressed="true">همه</button>
+            <button type="button" class="filter-chip" data-event-filter="nabur" aria-pressed="false">روزهای نابور</button>
+          </div>
+          <div class="event-list" id="event-list" aria-live="polite"></div>
+          <button type="button" class="secondary-button full-width" id="more-events" hidden>نمایش موارد بیشتر</button>
+        </section>
+
+        <section class="screen" id="screen-converter" aria-labelledby="converter-heading" hidden>
+          <div class="screen-intro">
+            <div><p class="eyebrow">تبدیل میان تقویم‌ها</p><h2 id="converter-heading">تبدیل تاریخ</h2></div>
+          </div>
+          <section class="content-card">
+            <p class="field-label">تقویم ورودی</p>
+            <div class="segmented" role="group" aria-label="تقویم ورودی">
+              <button type="button" data-source="gregorian" class="active" aria-pressed="true">میلادی</button>
+              <button type="button" data-source="persian" aria-pressed="false">شمسی</button>
+              <button type="button" data-source="islamic" aria-pressed="false">قمری</button>
+            </div>
+            <form id="converter-form" novalidate>
+              <div id="converter-input"></div>
+              <button class="primary-button full-width" type="submit">تبدیل تاریخ</button>
+              <p id="converter-error" class="form-error" role="alert" hidden></p>
+            </form>
+          </section>
+          <section class="content-card results-card" id="converter-results" aria-live="polite"></section>
+          <aside class="notice subtle-notice" role="note">
+            <span class="notice-icon" aria-hidden="true">i</span>
+            <p>تبدیل شمسی و قمری از تقویم‌های فراهم‌شده در مرورگر استفاده می‌کند. نگاشت زرتشتی فقط داده قدیمی و تأییدنشده است.</p>
+          </aside>
+        </section>
+
+        <section class="screen" id="screen-qibla" aria-labelledby="qibla-heading" hidden>
+          <div class="screen-intro">
+            <div><p class="eyebrow">جهت قبله</p><h2 id="qibla-heading">قبله‌نما</h2></div>
+          </div>
+          <section class="qibla-card">
+            <div class="compass" aria-label="قطب‌نمای نمایشی">
+              <div class="compass-ring"></div>
+              <span class="compass-north">شمال</span>
+              <span class="compass-east">شرق</span>
+              <span class="compass-south">جنوب</span>
+              <span class="compass-west">غرب</span>
+              <svg id="qibla-needle" class="qibla-needle" viewBox="0 0 48 150" aria-hidden="true">
+                <path class="needle-top" d="M24 3 34 76 24 68 14 76Z" />
+                <path class="needle-bottom" d="m24 147-10-71 10 8 10-8Z" />
+                <circle cx="24" cy="75" r="5" class="needle-center" />
+              </svg>
+              <div class="compass-center">قبله</div>
+            </div>
+            <p class="qibla-degree" id="qibla-degree">—°</p>
+            <p class="qibla-description" id="qibla-description">برای محاسبه جهت تقریبی، موقعیت مکانی را با اجازه خودتان فعال کنید.</p>
+            <button type="button" class="primary-button full-width" id="enable-location">فعال‌کردن موقعیت</button>
+            <p class="fine-print">موقعیت فقط در همین مرورگر استفاده می‌شود. نمایش قطب‌نما به پشتیبانی حسگر دستگاه وابسته است.</p>
+          </section>
+        </section>
+
+        <section class="screen" id="screen-settings" aria-labelledby="settings-heading" hidden>
+          <div class="screen-intro">
+            <div><p class="eyebrow">نمایش و ترجیحات</p><h2 id="settings-heading">تنظیمات</h2></div>
+          </div>
+          <section class="settings-group">
+            <p class="settings-group-title">نمایش تقویم</p>
+            <div class="setting-row">
+              <div><strong>رنگ‌بندی</strong><span>حالت روشن یا تیره</span></div>
+              <button class="setting-control" id="theme-toggle" type="button" aria-pressed="false">تیره</button>
+            </div>
+            <div class="setting-row">
+              <div><strong>شیوه رقم‌ها</strong><span>نمایش عددهای تقویم</span></div>
+              <button class="setting-control" id="digits-toggle" type="button" aria-pressed="false">فارسی</button>
+            </div>
+            <div class="setting-row">
+              <div><strong>شروع هفته</strong><span>ترتیب ستون‌های تقویم</span></div>
+              <button class="setting-control" id="week-toggle" type="button" aria-pressed="false">شنبه</button>
+            </div>
+          </section>
+          <section class="settings-group">
+            <p class="settings-group-title">یادآوری‌ها</p>
+            <div class="setting-row">
+              <div><strong>روزهای نابور</strong><span>ذخیره ترجیح در این نمونه</span></div>
+              <button class="switch" type="button" data-setting="naburReminder" role="switch" aria-checked="false" aria-label="یادآوری روزهای نابور"><span></span></button>
+            </div>
+            <div class="setting-row">
+              <div><strong>مناسبت‌ها</strong><span>ذخیره ترجیح در این نمونه</span></div>
+              <button class="switch" type="button" data-setting="eventReminder" role="switch" aria-checked="false" aria-label="یادآوری مناسبت‌ها"><span></span></button>
+            </div>
+            <p class="settings-note">این گزینه‌ها فقط برای نمایش نمونه ذخیره می‌شوند و هنوز اعلانی ارسال نمی‌کنند.</p>
+          </section>
+          <section class="settings-group about-group">
+            <p class="settings-group-title">درباره</p>
+            <div class="about-row"><span>نسخه نمونه</span><strong>۰٫۱</strong></div>
+            <div class="about-row"><span>مبنای داده مناسبت‌ها</span><strong>فایل قدیمی ارائه‌شده</strong></div>
+            <p class="settings-note">این نمونه، نسخه انتشار یا مرجع قطعی تاریخ‌های زرتشتی نیست.</p>
+          </section>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="بخش‌های برنامه">
+        <button type="button" class="nav-item active" data-screen-target="calendar" aria-current="page">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" /><path d="M7.5 3v4M16.5 3v4M4 9h16" /><path d="M8 13h2m4 0h2M8 17h2" /></svg><span>تقویم</span>
+        </button>
+        <button type="button" class="nav-item" data-screen-target="events">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h12a1.5 1.5 0 0 1 1.5 1.5v14L12 16l-7.5 4V6A1.5 1.5 0 0 1 6 4.5Z" /><path d="M8.5 8.5h7M8.5 11.5h7" /></svg><span>مناسبت‌ها</span>
+        </button>
+        <button type="button" class="nav-item" data-screen-target="converter">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h14m0 0-3-3m3 3-3 3M20 17H6m0 0 3-3m-3 3 3 3" /></svg><span>تبدیل</span>
+        </button>
+        <button type="button" class="nav-item" data-screen-target="qibla">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2Z" /></svg><span>قبله</span>
+        </button>
+        <button type="button" class="nav-item" data-screen-target="settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" /><path d="m19.4 13.5 1.1.9-1.5 2.6-1.4-.5a7.8 7.8 0 0 1-1.6.9l-.3 1.5h-3l-.3-1.5a7.8 7.8 0 0 1-1.6-.9l-1.4.5-1.5-2.6 1.1-.9a7.2 7.2 0 0 1 0-1.8l-1.1-.9 1.5-2.6 1.4.5a7.8 7.8 0 0 1 1.6-.9l.3-1.5h3l.3 1.5a7.8 7.8 0 0 1 1.6.9l1.4-.5 1.5 2.6-1.1.9a7.2 7.2 0 0 1 0 1.8Z" transform="translate(-1 -1)" /></svg><span>تنظیمات</span>
+        </button>
+      </nav>
+      <div id="self-check" class="self-check" hidden role="status"></div>
+    </div>
+    <script src="app.js" defer></script>
+  </body>
+</html>

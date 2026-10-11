@@ -2,7 +2,7 @@
 
 A proposed rebuild of the existing Zoroastrian calendar as a polished, accessible mobile application for daily dates, observances, Nabur, conversion, reminders, and native widgets.
 
-**Plan revision:** 2.0 · **Reviewed:** 2026-10-11 · **Status:** planning package; application implementation has not started.
+**Plan revision:** 2.0 · **Reviewed:** 2026-10-11 · **Status:** planning package with an interactive mobile web prototype; native application implementation has not started.
 
 ## Product direction
 
@@ -35,14 +35,15 @@ Before implementation, establish its calendar profile, year numbering, year-star
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Shared/native boundaries, calendar contract, content model, persistence, reminders, and widgets |
 | [CALENDAR_DATA_AUDIT.md](docs/CALENDAR_DATA_AUDIT.md) | Reproducible findings from the supplied JSON and required remediation |
 | [LEGACY_APP_INVENTORY.md](docs/LEGACY_APP_INVENTORY.md) | Partial feature and settings inventory from supplied legacy app screenshots |
+| [prototype/README.md](prototype/README.md) | How to run the mobile prototype and its current limitations |
 | [SOURCES.md](docs/SOURCES.md) | Primary platform documentation and cultural references used to inform the plan |
 | [zoroastrian_events.json](data/legacy/zoroastrian_events.json) | Unmodified legacy input, retained for migration and comparison |
 | [audit_summary.json](data/legacy/audit_summary.json) | Machine-readable structural audit of the legacy input |
 
 ## Starting the project
 
-Complete Phase 00 and the calendar decisions in Phase 01 before treating a date mapping as correct. Explore design while those decisions are being resolved. Build a small real-device capability prototype before committing to the shared UI and widget bridge.
+Complete Phase 00 and the calendar decisions in Phase 01 before treating a date mapping as correct. Explore design while those decisions are being resolved. A dependency-free mobile web prototype is available under [prototype](prototype/); it supports interaction review but does not satisfy the planned Android/iOS capability prototype.
 
 Each phase in the task plan has an explicit completion gate. Checked tasks require reviewable evidence; a successful round-trip conversion alone is not proof of calendar accuracy.
 
-There are no application build commands in this package because no runnable application or selected toolchain has been supplied. Add exact setup and build commands after Phase 03 produces a working project.
+Run the prototype from this package directory with `py -m http.server 8000`, then open `http://localhost:8000/prototype/`. Native Android/iOS build commands remain open until Phase 03 selects and validates a toolchain.

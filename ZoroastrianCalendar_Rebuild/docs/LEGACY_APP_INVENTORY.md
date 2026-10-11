@@ -21,6 +21,10 @@ The screenshots identify settings and features that should be investigated for m
 
 The calendar and converter screens show date mappings and event markers, but they do not prove the selected calendar profile, year convention, recurrence rules, or conversion accuracy. Keep the legacy JSON and its audit as separate evidence until those rules are reviewed.
 
+### Conversion-provider discrepancy
+
+The converter screenshot shows 11 October 2026 as 29 Rabi al-Thani 1448. The browser prototype's explicitly labeled Umm al-Qura provider returns 30 Rabi al-Thani 1448 for that same civil date. This is a one-day difference between two calendar conventions/providers, not a correction to either source. Resolve the intended Islamic date convention and obtain reviewer-approved fixtures before claiming parity.
+
 ## Listing search
 
 [Gahshomar Zoroastrian Calendar on Google Play](https://play.google.com/store/apps/details?id=com.gaso.calendar) was considered because its listing describes features that overlap with the screenshots. The user confirmed that it is not this app. Its package ID and claims are excluded from the product inventory. The target app name and store listing remain unidentified.

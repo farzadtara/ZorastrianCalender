@@ -173,6 +173,8 @@ Use roles rather than assuming a large team: product owner, calendar/content rev
 - [ ] **P02-06** Run moderated usability sessions with 5–8 representative users. Observe task completion, confusion about date systems, mistaken taps, and difficulty setting reminders.
 - [ ] **P02-07** Revise the design, freeze the V1 screen/state inventory, and supply component specs, content hierarchy, accessibility semantics, and assets.
 
+Prototype evidence: a dependency-free mobile web prototype is available in [prototype](prototype/). It covers Calendar, Observances, Converter, Qibla, and Settings using the screenshots as partial references, and marks imported religious dates as unverified. P02-05 is partially explored; visual-direction comparison, reviewer input, accessibility review, and usability sessions remain open, so Phase 02 is not complete.
+
 **Outputs:** selected visual direction, prototype, design tokens, screen/state specifications, usability findings.
 
 **Acceptance gate:** users can identify today's Roj/Nabur, find the next observance, convert a date, and set a reminder without coaching in at least 80% of observed attempts. This is a directional small-sample target, not a population estimate. No critical date-system confusion or accessibility obstacle remains unresolved.
@@ -193,6 +195,8 @@ Use roles rather than assuming a large team: product owner, calendar/content rev
 **Outputs:** working scaffold, device evidence, compatibility matrix, CI, architecture decisions, setup README.
 
 **Acceptance gate:** the prototype runs on Android and iOS devices and demonstrates the required text and native integration. A simulator-only build or an Android-only demonstration does not close this gate.
+
+The current browser prototype does not close P03-01 or P03-02. The native KMP project and Android/iOS SDK setup remain outstanding.
 
 ## Phase 04 — Shared calendar engine and date converter
 
