@@ -1,0 +1,255 @@
+{
+  "auditDate": "2026-10-11",
+  "sourceFile": "zoroastrian_events.json",
+  "sourceBytes": 61240,
+  "sha256": "e8884078914c47c879b7bc34aa1bae59ca0a171a46ce7634929a59d9507fe2af",
+  "recordCount": 365,
+  "uniqueDatePairs": 365,
+  "duplicateDatePairs": [],
+  "monthCounts": {
+    "1": 31,
+    "2": 31,
+    "3": 31,
+    "4": 31,
+    "5": 31,
+    "6": 31,
+    "7": 30,
+    "8": 30,
+    "9": 30,
+    "10": 30,
+    "11": 30,
+    "12": 29
+  },
+  "fields": [
+    "day",
+    "month",
+    "dayName",
+    "isNabor",
+    "isZoroastrianHolyday",
+    "zoroastrianHolydayTitle"
+  ],
+  "fieldTypes": {
+    "day": {
+      "int": 365
+    },
+    "month": {
+      "int": 365
+    },
+    "dayName": {
+      "str": 365
+    },
+    "isNabor": {
+      "bool": 365
+    },
+    "isZoroastrianHolyday": {
+      "bool": 365
+    },
+    "zoroastrianHolydayTitle": {
+      "str": 365
+    }
+  },
+  "allRowsHaveSameFields": true,
+  "orderedByMonthDay": true,
+  "uniqueDayNames": 35,
+  "first360Follow30NameCycle": true,
+  "ordinaryDayNames": [
+    "اورمزد",
+    "وهمن",
+    "اردیبهشت",
+    "شهریور",
+    "سپندارمزد",
+    "خرداد",
+    "امرداد",
+    "دی به آذر",
+    "آذر",
+    "آبان",
+    "خور(خیر)",
+    "ماه",
+    "تیر",
+    "گوش",
+    "دی به مهر",
+    "مهر",
+    "سروش",
+    "رشن",
+    "فروردین",
+    "ورهرام",
+    "رام",
+    "باد",
+    "دی به دین",
+    "دین",
+    "ارد",
+    "اشتاد",
+    "آسمان",
+    "زامیاد",
+    "مانترسپند",
+    "انارام"
+  ],
+  "specialDayRows": [
+    {
+      "day": 25,
+      "month": 12,
+      "dayName": "اهنود(ماه گاتابیو)",
+      "isNabor": false,
+      "isZoroastrianHolyday": false,
+      "zoroastrianHolydayTitle": "گاهان بار چهره همس پت میدیم"
+    },
+    {
+      "day": 26,
+      "month": 12,
+      "dayName": "اشتود(ماه گاتابیو)",
+      "isNabor": true,
+      "isZoroastrianHolyday": false,
+      "zoroastrianHolydayTitle": "گاهان بار چهره همس پت میدیم"
+    },
+    {
+      "day": 27,
+      "month": 12,
+      "dayName": "سپندتمد(ماه گاتابیو)",
+      "isNabor": false,
+      "isZoroastrianHolyday": false,
+      "zoroastrianHolydayTitle": "گاهان بار چهره همس پت میدیم"
+    },
+    {
+      "day": 28,
+      "month": 12,
+      "dayName": "وهوخشتر(ماه گاتابیو)",
+      "isNabor": false,
+      "isZoroastrianHolyday": false,
+      "zoroastrianHolydayTitle": "گاهان بار چهره همس پت میدیم"
+    },
+    {
+      "day": 29,
+      "month": 12,
+      "dayName": "وهیشتوش(ماه گاتابیو)",
+      "isNabor": false,
+      "isZoroastrianHolyday": false,
+      "zoroastrianHolydayTitle": "گاهان بار چهره همس پت میدیم"
+    }
+  ],
+  "naburFlagCount": 48,
+  "naburFlagCountsByName": {
+    "وهمن": 12,
+    "ماه": 12,
+    "گوش": 11,
+    "رام": 12,
+    "اشتود(ماه گاتابیو)": 1
+  },
+  "candidateOrdinaryNaburNames": [
+    "وهمن",
+    "ماه",
+    "گوش",
+    "رام"
+  ],
+  "candidateOrdinaryNaburRuleDiscrepancies": [
+    {
+      "day": 13,
+      "month": 2,
+      "dayName": "گوش",
+      "isNabor": false,
+      "isZoroastrianHolyday": false,
+      "zoroastrianHolydayTitle": "گاهان بار چهر میدیوزرم"
+    }
+  ],
+  "specialRowsWithNaburFlag": [
+    {
+      "day": 26,
+      "month": 12,
+      "dayName": "اشتود(ماه گاتابیو)",
+      "isNabor": true,
+      "isZoroastrianHolyday": false,
+      "zoroastrianHolydayTitle": "گاهان بار چهره همس پت میدیم"
+    }
+  ],
+  "nonEmptyTitleRows": 76,
+  "distinctNonEmptyTitleStrings": 29,
+  "trueHolidayFlagCount": 7,
+  "titledRowsWithFalseHolidayFlag": 69,
+  "emptyTitleRowsWithTrueHolidayFlag": 0,
+  "trueHolidayFlagRows": [
+    {
+      "day": 2,
+      "month": 1,
+      "dayName": "وهمن",
+      "isNabor": true,
+      "isZoroastrianHolyday": true,
+      "zoroastrianHolydayTitle": "جشن نوروز"
+    },
+    {
+      "day": 3,
+      "month": 1,
+      "dayName": "اردیبهشت",
+      "isNabor": false,
+      "isZoroastrianHolyday": true,
+      "zoroastrianHolydayTitle": "جشن نوروز"
+    },
+    {
+      "day": 6,
+      "month": 1,
+      "dayName": "خرداد",
+      "isNabor": false,
+      "isZoroastrianHolyday": true,
+      "zoroastrianHolydayTitle": "زادروز اشوزرتشت"
+    },
+    {
+      "day": 19,
+      "month": 1,
+      "dayName": "فروردین",
+      "isNabor": false,
+      "isZoroastrianHolyday": true,
+      "zoroastrianHolydayTitle": "جشن فروردینگان"
+    },
+    {
+      "day": 10,
+      "month": 7,
+      "dayName": "مهر",
+      "isNabor": false,
+      "isZoroastrianHolyday": true,
+      "zoroastrianHolydayTitle": "جشن مهرگان"
+    },
+    {
+      "day": 5,
+      "month": 10,
+      "dayName": "خور(خیر)",
+      "isNabor": false,
+      "isZoroastrianHolyday": true,
+      "zoroastrianHolydayTitle": "درگذشت زرتشت"
+    },
+    {
+      "day": 10,
+      "month": 11,
+      "dayName": "مهر",
+      "isNabor": false,
+      "isZoroastrianHolyday": true,
+      "zoroastrianHolydayTitle": "جشن سده"
+    }
+  ],
+  "combinedTitleRows": [
+    {
+      "day": 24,
+      "month": 3,
+      "dayName": "اشتاد",
+      "isNabor": false,
+      "isZoroastrianHolyday": false,
+      "zoroastrianHolydayTitle": "زیارت پیرسبز - زیارت ستی پیر"
+    },
+    {
+      "day": 10,
+      "month": 4,
+      "dayName": "تیر",
+      "isNabor": false,
+      "isZoroastrianHolyday": false,
+      "zoroastrianHolydayTitle": "گاهان بار چهره میدیوشهم گاه - جشن تیرگان"
+    }
+  ],
+  "hasMonth12Day30": false,
+  "coordinateSystemStatus": "inferred_solar_hijri_non_leap_shape_requires_confirmation",
+  "religiousRuleApprovalStatus": "not_provided",
+  "religiousCorrectionsApplied": false,
+  "limitations": [
+    "No calendar profile or year/era metadata",
+    "No year-specific leap/intercalary rule",
+    "No approved fixture sources",
+    "Holiday flag semantics unspecified",
+    "Special-day Nabur flag requires review"
+  ]
+}
