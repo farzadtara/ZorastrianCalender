@@ -34,6 +34,7 @@ Before implementation, establish its calendar profile, year numbering, year-star
 | [UI_UX_SPEC.md](docs/UI_UX_SPEC.md) | Screen requirements, visual directions, RTL, accessibility, interactions, and design validation |
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Shared/native boundaries, calendar contract, content model, persistence, reminders, and widgets |
 | [CALENDAR_DATA_AUDIT.md](docs/CALENDAR_DATA_AUDIT.md) | Reproducible findings from the supplied JSON and required remediation |
+| [LEGACY_APP_INVENTORY.md](docs/LEGACY_APP_INVENTORY.md) | Partial feature and settings inventory from supplied legacy app screenshots |
 | [SOURCES.md](docs/SOURCES.md) | Primary platform documentation and cultural references used to inform the plan |
 | [zoroastrian_events.json](data/legacy/zoroastrian_events.json) | Unmodified legacy input, retained for migration and comparison |
 | [audit_summary.json](data/legacy/audit_summary.json) | Machine-readable structural audit of the legacy input |

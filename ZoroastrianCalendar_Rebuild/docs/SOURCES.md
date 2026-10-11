@@ -37,7 +37,9 @@ A religious-calendar reviewer should select primary community calendars or other
 - Supplied README(8).md: baseline KMP/Compose proposal and native widget goals.
 - Supplied TASKS_AND_PLAN.md: baseline six-phase implementation outline.
 - Supplied zoroastrian_events.json: all 365 rows audited; unmodified copy included.
+- Supplied legacy Android screenshots: partial visual feature inventory in [LEGACY_APP_INVENTORY.md](LEGACY_APP_INVENTORY.md).
+- Similar Google Play listing for Gahshomar Zoroastrian Calendar (`com.gaso.calendar`): [listing](https://play.google.com/store/apps/details?id=com.gaso.calendar); the user confirmed it is not the target app, so it is excluded from product evidence.
 
-The old app binary/source, actual device demographics, signing identities, profile specification, translations, and approved annual reference calendars were not supplied. Tasks depending on these are explicit discovery/review work.
+The old app binary/source, target store listing, direct user feedback, actual device demographics, signing identities, profile specification, translations, and approved annual reference calendars were not supplied. Tasks depending on these are explicit discovery/review work.
 
 All scope choices, palette candidates, usability targets, effort estimates, and performance budgets in this package are proposed project decisions. They are not claims made by the linked documentation and not measurements already achieved.

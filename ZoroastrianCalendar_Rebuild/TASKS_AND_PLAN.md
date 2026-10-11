@@ -128,11 +128,15 @@ Use roles rather than assuming a large team: product owner, calendar/content rev
 **Purpose:** understand the existing users, preserve upgrade paths, and agree what the first release promises.
 
 - [ ] **P00-01** Inspect the old application, screenshots, store listing, source code if available, and user feedback. Inventory each screen, feature, setting, widget, reminder, and known defect.
+
+  Current evidence is summarized in [LEGACY_APP_INVENTORY.md](docs/LEGACY_APP_INVENTORY.md). P00-01 remains open because the screenshots are partial, the target store listing is unidentified, and direct user feedback is unavailable.
 - [ ] **P00-02** Record Android application ID, signing ownership, version history, store access, and any iOS bundle ID. Check whether preserving identity is possible.
 - [ ] **P00-03** Inventory legacy preferences, databases, notifications, and exported data. Distinguish data that can be migrated from data not yet available.
 - [ ] **P00-04** Interview 5–8 representative users, including frequent users and people with large-text or assistive-technology needs. Capture the daily tasks they actually perform.
 - [ ] **P00-05** Confirm audience, languages, V1 scope, calendar reviewer, release ownership, content rights, and launch business model. Record unresolved items with an owner.
 - [ ] **P00-06** Build a parity matrix: legacy behavior, proposed behavior, migration action, and intentionally changed behavior. Record the rationale for removing or changing features.
+
+  A preliminary, screenshot-based matrix is recorded in [LEGACY_APP_INVENTORY.md](docs/LEGACY_APP_INVENTORY.md). P00-06 remains open until legacy behavior and proposed scope are verified and approved.
 
 **Outputs:** legacy inventory, parity matrix, decision register, approved V1 scope.
 
@@ -145,6 +149,8 @@ Use roles rather than assuming a large team: product owner, calendar/content rev
 - [ ] **P01-01** Specify profile ID/name, year era, year-start calculation or table, epoch/reference dates, supported interval, date boundaries, and leap/intercalary policy.
 - [ ] **P01-02** Define ordinary Roj/Mah IDs, reviewed names/aliases, Gatha identities, and any separate leap-day identity. Special days must not become an invented ordinary month/day.
 - [ ] **P01-03** Confirm the legacy JSON coordinate system and year applicability. Review every row with a rule conflict; use the findings in [CALENDAR_DATA_AUDIT.md](docs/CALENDAR_DATA_AUDIT.md).
+
+  The documented structural audit was rerun on 2026-10-11 and its row counts, month layout, day-name cycle, Nabur flags, and title/holiday counts match [CALENDAR_DATA_AUDIT.md](docs/CALENDAR_DATA_AUDIT.md). P01-03 remains open pending confirmation of the coordinate system/year applicability and reviewer decisions on the flagged rows.
 - [ ] **P01-04** Resolve the Gosh flag at legacy 02/13 and the special-day Nabur flag at 12/26. Review the meaning of the seven true holiday flags. Preserve raw values and document each approved change.
 - [ ] **P01-05** Curate event IDs, titles, categories, recurrence calendar, ranges, holiday semantics, regional/profile applicability, sources, language availability, and content review status.
 - [ ] **P01-06** Create independent expected-date fixtures from reviewed calendars. Cover regular dates, all Gatha days, any leap/intercalary day, year transitions, and festival/Nabur boundaries in more than one year.
