@@ -2,7 +2,7 @@
 
 A proposed rebuild of the existing Zoroastrian calendar as a polished, accessible mobile application for daily dates, observances, Nabur, conversion, reminders, and native widgets.
 
-**Plan revision:** 2.0 · **Reviewed:** 2026-10-11 · **Status:** planning package with an interactive mobile web prototype; native application implementation has not started.
+**Plan revision:** 2.0 · **Reviewed:** 2026-10-11 · **Status:** interactive prototype plus the first native KMP application scaffold.
 
 ## Product direction
 
@@ -40,10 +40,18 @@ Before implementation, establish its calendar profile, year numbering, year-star
 | [zoroastrian_events.json](data/legacy/zoroastrian_events.json) | Unmodified legacy input, retained for migration and comparison |
 | [audit_summary.json](data/legacy/audit_summary.json) | Machine-readable structural audit of the legacy input |
 
+## Native application
+
+The native project is under `androidApp`, `sharedLogic`, `sharedUI`, and `iosApp`. Android uses Compose Multiplatform; iOS uses SwiftUI; both consume the same Kotlin menu catalog and local calendar-status API. The first native screen is a navigation and visual capability slice, not a release build. It clearly marks the religious calendar rules as awaiting review.
+
+Open `ZoroastrianCalendar_Rebuild` in Android Studio with the Android SDK platform 36 installed, then run `:androidApp:assembleDebug`. Open `iosApp/ZoroastrianCalendar.xcodeproj` on macOS to build the SwiftUI host; Xcode invokes Gradle to build and link `SharedLogic`. The Gradle wrapper bootstrapped on a temporary JDK 21, but `gradlew help` stopped while resolving the Android Gradle plugin from the configured repositories. No Android SDK or Xcode is available in this Windows workspace, so neither native app has compiled here. Bundle identifiers and minimum OS versions are prototype defaults and must be checked against the old app/signing and device-coverage records before release.
+
+The compatibility matrix is pinned in `gradle/libs.versions.toml` and `gradle/wrapper/gradle-wrapper.properties`; see [Phase 03](TASKS_AND_PLAN.md). The native implementation does not claim a verified Zoroastrian date mapping until Phase 01 calendar review is complete.
+
 ## Starting the project
 
-Complete Phase 00 and the calendar decisions in Phase 01 before treating a date mapping as correct. Explore design while those decisions are being resolved. A dependency-free mobile web prototype is available under [prototype](prototype/); it supports interaction review but does not satisfy the planned Android/iOS capability prototype.
+Complete Phase 00 and the calendar decisions in Phase 01 before treating a date mapping as correct. Explore design while those decisions are being resolved. The dependency-free mobile web prototype under [prototype](prototype/) remains available for interaction review; it is not a substitute for native device checks.
 
 Each phase in the task plan has an explicit completion gate. Checked tasks require reviewable evidence; a successful round-trip conversion alone is not proof of calendar accuracy.
 
-Run the prototype from this package directory with `py -m http.server 8000`, then open `http://localhost:8000/prototype/`. Native Android/iOS build commands remain open until Phase 03 selects and validates a toolchain.
+Run the prototype from this package directory with `py -m http.server 8000`, then open `http://localhost:8000/prototype/`.

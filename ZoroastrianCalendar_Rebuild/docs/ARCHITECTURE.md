@@ -1,11 +1,13 @@
 # Zoroastrian Calendar — Architecture & Domain Contracts
 
-**Revision:** 2.0 · **Date:** 2026-10-11  
-**Status:** proposed implementation architecture; final libraries and OS targets are selected in Phase 03.
+**Revision:** 2.1 · **Date:** 2026-10-12
+**Status:** initial native scaffold follows the user-selected Android Compose Multiplatform + iOS SwiftUI split; device/build validation remains open.
 
 ## 1. Architecture direction
 
-Retain KMP and Compose Multiplatform from the original plan, with a pure shared calendar domain and native platform adapters. Kotlin's [support matrix](https://kotlinlang.org/docs/multiplatform/supported-platforms.html) lists Android/iOS as stable for both technologies. The capability prototype must still validate this application's requirements.
+Use a pure KMP `sharedLogic` module for domain and app catalog APIs, a Compose Multiplatform `sharedUI` module for Android screens, an Android host, and a native SwiftUI iOS host. Both screens use shared stable IDs and copy. Keep native notifications, widgets, and system integrations in their platform hosts. The UI split is the user's explicit choice; confirm accessibility and performance on devices before release.
+
+The initial build pin is Kotlin 2.4.20, Compose Multiplatform 1.12.1, Android Gradle Plugin 9.3.0, and Gradle 9.7.0. This falls within the published [Kotlin Multiplatform compatibility matrix](https://kotlinlang.org/docs/multiplatform/multiplatform-compatibility-guide.html) and [Compose Multiplatform compatibility guidance](https://kotlinlang.org/docs/multiplatform/compose-compatibility-and-versioning.html). Android API 36, Android min API 24, and iOS 15 are capability-prototype settings, not final product-support decisions. Bundle IDs are provisional until the old app identity and signing access are known.
 
 Use a small number of real build modules. Inside them, organize packages by domain and feature:
 

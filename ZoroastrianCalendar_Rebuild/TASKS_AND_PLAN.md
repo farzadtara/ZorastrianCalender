@@ -183,6 +183,8 @@ Prototype evidence: a dependency-free mobile web prototype is available in [prot
 
 **Purpose:** prove the technical approach before implementing all screens.
 
+**Implementation note (2026-10-12):** The user selected KMP shared logic, Compose Multiplatform for Android, and native SwiftUI for iOS. A starter project and matching right-side drawer have been added. Calendar/profile rules remain blocked on reviewer approval; no religious dates are inferred in the starter UI. P03 acceptance still requires compatible-toolchain builds and real-device evidence on both platforms.
+
 - [ ] **P03-01** Generate a current supported KMP project and record Kotlin, Compose, Gradle, Android plugin/SDK, Xcode, Swift, and minimum OS compatibility. Pin a tested stable matrix.
 - [ ] **P03-02** Establish logical shared calendar/content/storage packages, shared presentation/UI, Android host, iOS host, and native widget targets. Avoid creating a Gradle module for every screen.
 - [ ] **P03-03** Configure supported Gradle-to-Xcode integration for local builds. Produce an XCFramework only if the chosen integration or distribution workflow needs it.

@@ -2,7 +2,7 @@
 
 A reconstruction of a Zoroastrian calendar app from the supplied Android screenshots and legacy calendar data.
 
-The planning documents, screenshot inventory, source data, and current mobile web prototype are in [ZoroastrianCalendar_Rebuild](ZoroastrianCalendar_Rebuild/README.md).
+The planning documents, screenshot inventory, source data, mobile web prototype, and initial KMP/Compose/SwiftUI app scaffold are in [ZoroastrianCalendar_Rebuild](ZoroastrianCalendar_Rebuild/README.md).
 
 ## Preview the prototype
 
