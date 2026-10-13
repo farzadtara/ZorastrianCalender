@@ -7,10 +7,12 @@ androidTargetSdk = "36"
 composeMultiplatform = "1.12.1"
 kotlin = "2.4.20"
 kotlinxDatetime = "0.8.0"
+glance = "1.2.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

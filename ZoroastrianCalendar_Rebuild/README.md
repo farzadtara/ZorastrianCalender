@@ -35,6 +35,7 @@ Before implementation, establish its calendar profile, year numbering, year-star
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Shared/native boundaries, calendar contract, content model, persistence, reminders, and widgets |
 | [CALENDAR_DATA_AUDIT.md](docs/CALENDAR_DATA_AUDIT.md) | Reproducible findings from the supplied JSON and required remediation |
 | [LEGACY_APP_INVENTORY.md](docs/LEGACY_APP_INVENTORY.md) | Partial feature and settings inventory from supplied legacy app screenshots |
+| [WIDGETS.md](docs/WIDGETS.md) | Home-screen widget behavior, setup, and current calendar-data limits |
 | [prototype/README.md](prototype/README.md) | How to run the mobile prototype and its current limitations |
 | [SOURCES.md](docs/SOURCES.md) | Primary platform documentation and cultural references used to inform the plan |
 | [zoroastrian_events.json](data/legacy/zoroastrian_events.json) | Unmodified legacy input, retained for migration and comparison |
@@ -43,6 +44,8 @@ Before implementation, establish its calendar profile, year numbering, year-star
 ## Native application
 
 The native project is under `androidApp`, `sharedLogic`, `sharedUI`, and `iosApp`. Android uses Compose Multiplatform; iOS uses SwiftUI; both consume the same Kotlin menu catalog and local calendar-status API. The first native screen is a navigation and visual capability slice, not a release build. It clearly marks the religious calendar rules as awaiting review.
+
+Android Glance and iOS WidgetKit home-screen widgets are available in the native projects. This first widget slice shows the current civil date and the review status; it does not claim a Zoroastrian date. See [widget setup and limits](docs/WIDGETS.md).
 
 Open `ZoroastrianCalendar_Rebuild` in Android Studio with the Android SDK platform 36 installed, then run `:androidApp:assembleDebug`. Open `iosApp/ZoroastrianCalendar.xcodeproj` on macOS to build the SwiftUI host; Xcode invokes Gradle to build and link `SharedLogic`. The Gradle wrapper bootstrapped on a temporary JDK 21, but `gradlew help` stopped while resolving the Android Gradle plugin from the configured repositories. No Android SDK or Xcode is available in this Windows workspace, so neither native app has compiled here. Bundle identifiers and minimum OS versions are prototype defaults and must be checked against the old app/signing and device-coverage records before release.
 

@@ -273,6 +273,8 @@ The current browser prototype does not close P03-01 or P03-02. The native KMP pr
 
 **Purpose:** provide readable, trustworthy date information outside the app.
 
+**Implementation note (2026-10-13):** a first safe widget slice is present on both platforms. Small and medium layouts show the device-local civil date and clearly state that Zoroastrian calendar rules are awaiting review; tapping opens the app. This does not complete Phase 08: reviewed calendar data, persisted widget inputs, product-owned App Group identity, data bridges, and platform/device validation are still outstanding. See [WIDGETS.md](docs/WIDGETS.md).
+
 - [ ] **P08-01** Specify small and medium widgets in both languages/themes: civil date, religious identity, Nabur badge, and limited observance text appropriate to space.
 - [ ] **P08-02** Implement Android Glance widgets with persistent inputs, responsive layouts, empty/error states, and correct destination links.
 - [ ] **P08-03** Implement SwiftUI/WidgetKit providers and configure a product-owned App Group on both app and extension. The original group identifier is a placeholder until verified.
