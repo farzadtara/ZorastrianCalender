@@ -23,6 +23,12 @@ Platform documentation informs the engineering plan. Cultural references identif
 
 Platform documentation can change. Resolve dependency versions and minimum OS support during the capability prototype, then recheck store submission policies immediately before release.
 
+## Font
+
+| Asset | License and location |
+| --- | --- |
+| [Shabnam Persian font](https://github.com/rastikerdar/shabnam-font) | Bundled for the prototype and native UIs under SIL Open Font License 1.1; the license is included in `sharedUI/src/commonMain/composeResources/files/fonts/OFL.txt`. |
+
 ## Cultural/calendar references
 
 | Reference | Use and limitation |

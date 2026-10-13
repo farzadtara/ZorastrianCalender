@@ -20,6 +20,11 @@
 	<string>0.1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>shabnam_regular.ttf</string>
+		<string>shabnam_bold.ttf</string>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UIUserInterfaceStyle</key>

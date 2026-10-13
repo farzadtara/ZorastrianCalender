@@ -25,10 +25,15 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":sharedLogic"))
+            implementation(compose.components.resources)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "com.farzadtara.zoroastrian.sharedui.generated.resources"
 }

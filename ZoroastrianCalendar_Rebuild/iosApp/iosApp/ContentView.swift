@@ -1,9 +1,10 @@
 import SwiftUI
 import SharedLogic
 
-private let pageBackground = Color(red: 23.0 / 255, green: 29.0 / 255, blue: 29.0 / 255)
-private let cardBackground = Color(red: 34.0 / 255, green: 43.0 / 255, blue: 43.0 / 255)
-private let teal = Color(red: 32.0 / 255, green: 199.0 / 255, blue: 167.0 / 255)
+private let pageBackground = Color(red: 16.0 / 255, green: 24.0 / 255, blue: 23.0 / 255)
+private let cardBackground = Color(red: 23.0 / 255, green: 35.0 / 255, blue: 31.0 / 255)
+private let raisedBackground = Color(red: 30.0 / 255, green: 44.0 / 255, blue: 39.0 / 255)
+private let teal = Color(red: 131.0 / 255, green: 226.0 / 255, blue: 194.0 / 255)
 private let textPrimary = Color(red: 244.0 / 255, green: 242.0 / 255, blue: 233.0 / 255)
 private let textMuted = Color(red: 181.0 / 255, green: 192.0 / 255, blue: 185.0 / 255)
 
@@ -23,7 +24,7 @@ struct ContentView: View {
                     ScrollView {
                         page.padding(.horizontal, 18).padding(.top, 20).padding(.bottom, 32)
                     }
-                    Spacer(minLength: 0)
+                    bottomNavigation
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(pageBackground.ignoresSafeArea())
@@ -45,7 +46,7 @@ struct ContentView: View {
                         closeDrawer()
                     }
                     .frame(width: min(geometry.size.width * 0.76, 360), height: geometry.size.height)
-                    .background(Color(red: 34.0 / 255, green: 34.0 / 255, blue: 34.0 / 255))
+                    .background(cardBackground)
                     .transition(.move(edge: .leading))
                     .accessibilityAddTraits(.isModal)
                 }
@@ -75,8 +76,8 @@ struct ContentView: View {
             .accessibilityLabel("بازکردن منو")
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("گاه‌شمار زرتشتی").font(.caption).foregroundStyle(textMuted)
-                Text(catalog.screenTitle(id: selectedID)).font(.title3.weight(.semibold)).foregroundStyle(textPrimary)
+                Text("گاه‌شمار زرتشتی").shabnam(12, relativeTo: .caption).foregroundStyle(textMuted)
+                Text(catalog.screenTitle(id: selectedID)).shabnam(20, relativeTo: .title3, weight: .bold).foregroundStyle(textPrimary)
             }
             Spacer(minLength: 0)
         }
@@ -84,10 +85,35 @@ struct ContentView: View {
         .padding(.top, 10)
     }
 
+    private var bottomNavigation: some View {
+        HStack(spacing: 4) {
+            ForEach(menuItems.filter { ["calendar", "events", "converter", "qibla", "settings"].contains($0.id) }, id: \.id) { item in
+                Button { selectedID = item.id } label: {
+                    VStack(spacing: 4) {
+                        Image(systemName: item.systemImage).font(.system(size: 19, weight: .medium))
+                        Text(item.title).shabnam(10, relativeTo: .caption, weight: selectedID == item.id ? .bold : .regular)
+                    }
+                    .foregroundStyle(selectedID == item.id ? teal : textMuted)
+                    .frame(maxWidth: .infinity, minHeight: 54)
+                    .background(selectedID == item.id ? teal.opacity(0.12) : .clear, in: RoundedRectangle(cornerRadius: 14))
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(selectedID == item.id ? .isSelected : [])
+            }
+        }
+        .padding(.horizontal, 10)
+        .padding(.top, 7)
+        .padding(.bottom, 4)
+        .background(cardBackground.ignoresSafeArea(edges: .bottom))
+        .overlay(alignment: .top) { Rectangle().fill(Color.white.opacity(0.06)).frame(height: 1) }
+    }
+
     @ViewBuilder
     private var page: some View {
         switch selectedID {
         case "calendar": calendarPage
+        case "events": infoCard("مناسبت‌ها", "محتوای قدیمی موجود است، اما قواعد تکرار و تاریخ‌های آینده هنوز تأیید نشده‌اند.")
         case "converter": infoCard("تبدیل تاریخ", "مبدل پس از انتخاب و بررسی قواعد تقویم در بخش مشترک فعال می‌شود.")
         case "qibla": infoCard("قبله‌نما", "برای این ابزار، دسترسی مکان فقط پس از درخواست و اجازه شما استفاده خواهد شد.")
         case "settings": infoCard("تنظیمات", "زبان، شیوه رقم‌ها، رنگ‌بندی، شروع هفته و یادآورها در این بخش قرار می‌گیرند.")
@@ -98,24 +124,28 @@ struct ContentView: View {
 
     private var calendarPage: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("امروز در یک نگاه").font(.subheadline).foregroundStyle(textMuted)
+            Text("امروز در یک نگاه").shabnam(15, relativeTo: .subheadline).foregroundStyle(textMuted)
             VStack(alignment: .leading, spacing: 10) {
-                Text("تاریخ مدنی امروز").font(.subheadline).foregroundStyle(textMuted)
+                Text("تاریخ مدنی امروز").shabnam(15, relativeTo: .subheadline).foregroundStyle(textMuted)
                 Text(catalog.todayCivilDate())
-                    .font(.largeTitle.weight(.bold))
+                    .shabnam(34, relativeTo: .largeTitle, weight: .bold)
                     .foregroundStyle(textPrimary)
                     .environment(\.layoutDirection, .leftToRight)
                 Text("پروفایل تقویم زرتشتی در انتظار بازبینی")
-                    .font(.subheadline.weight(.semibold))
+                    .shabnam(15, relativeTo: .subheadline, weight: .bold)
                     .foregroundStyle(Color(red: 229.0 / 255, green: 188.0 / 255, blue: 104.0 / 255))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(20)
-            .background(cardBackground, in: RoundedRectangle(cornerRadius: 22))
+            .background(
+                LinearGradient(colors: [Color(red: 29.0 / 255, green: 49.0 / 255, blue: 40.0 / 255), cardBackground], startPoint: .topTrailing, endPoint: .bottomLeading),
+                in: RoundedRectangle(cornerRadius: 24)
+            )
+            .overlay(RoundedRectangle(cornerRadius: 24).stroke(Color.white.opacity(0.06), lineWidth: 1))
 
             infoCard("درباره تاریخ‌های زرتشتی", catalog.calendarReviewMessage())
             Text("پس از تأیید قواعد، نمای ماهانه، نام روز، نابور و مناسبت‌های مرتبط به این صفحه افزوده می‌شود.")
-                .font(.body)
+                .shabnam(16, relativeTo: .body)
                 .foregroundStyle(textMuted)
                 .lineSpacing(6)
                 .padding(.horizontal, 4)
@@ -124,12 +154,13 @@ struct ContentView: View {
 
     private func infoCard(_ title: String, _ message: String) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(title).font(.headline).foregroundStyle(textPrimary)
-            Text(message).font(.body).foregroundStyle(textMuted).lineSpacing(6)
+            Text(title).shabnam(19, relativeTo: .headline, weight: .bold).foregroundStyle(textPrimary)
+            Text(message).shabnam(16, relativeTo: .body).foregroundStyle(textMuted).lineSpacing(7)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(cardBackground, in: RoundedRectangle(cornerRadius: 20))
+        .background(raisedBackground, in: RoundedRectangle(cornerRadius: 21))
+        .overlay(RoundedRectangle(cornerRadius: 21).stroke(Color.white.opacity(0.05), lineWidth: 1))
     }
 
     private func closeDrawer() {
@@ -155,7 +186,7 @@ private struct DrawerView: View {
                                     .foregroundStyle(teal)
                                     .frame(width: 34)
                                 Text(item.title)
-                                    .font(.title3)
+                                    .shabnam(19, relativeTo: .title3)
                                     .foregroundStyle(textPrimary)
                                 Spacer(minLength: 0)
                             }
@@ -173,7 +204,7 @@ private struct DrawerView: View {
             }
             Spacer(minLength: 0)
         }
-        .background(Color(red: 34.0 / 255, green: 34.0 / 255, blue: 34.0 / 255))
+        .background(cardBackground)
     }
 }
 
@@ -186,8 +217,8 @@ private struct DrawerBanner: View {
                 Ellipse().fill(Color(red: 0.91, green: 0.52, blue: 0.1)).frame(width: geometry.size.width * 1.3, height: 95).offset(x: -geometry.size.width * 0.08, y: 30)
                 Ellipse().fill(Color(red: 0.79, green: 0.39, blue: 0.1)).frame(width: geometry.size.width * 0.9, height: 74).offset(x: geometry.size.width * 0.43, y: 44)
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("گاه‌شمار زرتشتی").font(.headline.weight(.bold))
-                    Text("تقویم، مناسبت‌ها و ابزارها").font(.caption)
+                    Text("گاه‌شمار زرتشتی").shabnam(19, relativeTo: .headline, weight: .bold)
+                    Text("تقویم، مناسبت‌ها و ابزارها").shabnam(12, relativeTo: .caption)
                 }
                 .foregroundStyle(Color(red: 0.19, green: 0.14, blue: 0.08))
                 .padding(18)
@@ -197,5 +228,12 @@ private struct DrawerBanner: View {
         }
         .frame(height: 176)
         .clipShape(RoundedRectangle(cornerRadius: 18))
+    }
+}
+
+private extension View {
+    func shabnam(_ size: CGFloat, relativeTo style: Font.TextStyle = .body, weight: Font.Weight = .regular) -> some View {
+        let name = weight == .bold ? "Shabnam-Bold" : "Shabnam"
+        return font(.custom(name, size: size, relativeTo: style))
     }
 }

@@ -26,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -42,6 +43,8 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
@@ -49,19 +52,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.farzadtara.zoroastrian.shared.AppCatalog
 import com.farzadtara.zoroastrian.shared.AppMenuItem
+import com.farzadtara.zoroastrian.sharedui.generated.resources.Res
+import com.farzadtara.zoroastrian.sharedui.generated.resources.shabnam_bold
+import com.farzadtara.zoroastrian.sharedui.generated.resources.shabnam_regular
 import kotlinx.coroutines.launch
 
-private val Background = Color(0xFF171D1D)
-private val SurfaceColor = Color(0xFF222B2B)
+private val Background = Color(0xFF101817)
+private val SurfaceColor = Color(0xFF17231F)
+private val RaisedSurface = Color(0xFF1E2C27)
 private val TextColor = Color(0xFFF4F2E9)
 private val MutedColor = Color(0xFFB5C0B9)
-private val Accent = Color(0xFF20C7A7)
+private val Accent = Color(0xFF83E2C2)
 private val Warning = Color(0xFFE5BC68)
 
 @Composable
 fun App() {
     val catalog = remember { AppCatalog() }
     val menuItems = remember { catalog.menuItems() }
+    val shabnam = FontFamily(
+        Font(Res.font.shabnam_regular, FontWeight.Normal),
+        Font(Res.font.shabnam_bold, FontWeight.Bold),
+    )
     val drawerState = androidx.compose.material3.rememberDrawerState(
         initialValue = androidx.compose.material3.DrawerValue.Closed,
     )
@@ -77,14 +88,14 @@ fun App() {
             onBackground = TextColor,
             surface = SurfaceColor,
             onSurface = TextColor,
-        )) {
+        ), typography = Typography(fontFamily = shabnam)) {
             ModalNavigationDrawer(
                 drawerState = drawerState,
                 scrimColor = Color.Black.copy(alpha = .68f),
                 drawerContent = {
                     ModalDrawerSheet(
                         modifier = Modifier.width(320.dp),
-                        drawerContainerColor = Color(0xFF222222),
+                        drawerContainerColor = SurfaceColor,
                         drawerTonalElevation = 0.dp,
                     ) {
                         DrawerHeader()
@@ -112,14 +123,14 @@ fun App() {
                     contentWindowInsets = WindowInsets.safeDrawing,
                     topBar = {
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 10.dp),
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(14.dp),
                         ) {
                             Surface(
                                 onClick = { scope.launch { drawerState.open() } },
                                 modifier = Modifier.size(48.dp),
-                                shape = RoundedCornerShape(15.dp),
+                                shape = RoundedCornerShape(16.dp),
                                 color = SurfaceColor,
                                 contentColor = Accent,
                             ) {
@@ -131,7 +142,7 @@ fun App() {
                             }
                             Column {
                                 Text("گاه‌شمار زرتشتی", color = MutedColor, fontSize = 11.sp)
-                                Text(catalog.screenTitle(selectedID), color = TextColor, fontSize = 19.sp, fontWeight = FontWeight.SemiBold)
+                                Text(catalog.screenTitle(selectedID), color = TextColor, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     },
@@ -163,7 +174,7 @@ fun App() {
 
 @Composable
 private fun DrawerHeader() {
-    Box(modifier = Modifier.fillMaxWidth().height(176.dp).clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))) {
+    Box(modifier = Modifier.fillMaxWidth().height(184.dp).clip(RoundedCornerShape(bottomStart = 22.dp, bottomEnd = 22.dp))) {
         Canvas(Modifier.fillMaxSize()) {
             drawRect(Color(0xFFF0AD26), style = Fill)
             drawCircle(Color(0xFFFFD65C), radius = size.minDimension * .12f, center = androidx.compose.ui.geometry.Offset(size.width * .78f, size.height * .28f))
@@ -186,8 +197,8 @@ private fun DrawerRow(item: AppMenuItem, selected: Boolean, onClick: () -> Unit)
     Surface(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth().height(58.dp),
-        shape = RoundedCornerShape(14.dp),
-        color = if (selected) Color(0xFF2C4842) else Color.Transparent,
+        shape = RoundedCornerShape(16.dp),
+        color = if (selected) Color(0xFF263D34) else Color.Transparent,
     ) {
         Row(
             modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -206,9 +217,10 @@ private fun BottomNavigation(selectedID: String, onSelect: (String) -> Unit) {
         Triple("calendar", "تقویم", "▦"),
         Triple("events", "مناسبت‌ها", "◷"),
         Triple("converter", "تبدیل", "↕"),
+        Triple("qibla", "قبله", "⌖"),
         Triple("settings", "تنظیمات", "⚙"),
     )
-    NavigationBar(containerColor = Color(0xFF202727)) {
+    NavigationBar(containerColor = SurfaceColor) {
         items.forEach { (id, label, symbol) ->
             NavigationBarItem(
                 selected = id == selectedID,
@@ -243,14 +255,14 @@ private fun ScreenContent(destination: String, catalog: AppCatalog, modifier: Mo
 @Composable
 private fun CalendarOverview(catalog: AppCatalog) {
     Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        Text("امروز در یک نگاه", color = MutedColor, fontSize = 12.sp)
-        Surface(shape = RoundedCornerShape(22.dp), color = SurfaceColor) {
-            Column(modifier = Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("تاریخ مدنی امروز", color = MutedColor, fontSize = 12.sp)
+        Text("امروز در یک نگاه", color = MutedColor, fontSize = 13.sp)
+        Surface(shape = RoundedCornerShape(24.dp), color = SurfaceColor) {
+            Column(modifier = Modifier.fillMaxWidth().padding(21.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
+                Text("تاریخ مدنی امروز", color = MutedColor, fontSize = 13.sp)
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     Text(catalog.todayCivilDate(), color = TextColor, fontSize = 28.sp, fontWeight = FontWeight.Bold)
                 }
-                Text("پروفایل تقویم زرتشتی در انتظار بازبینی", color = Warning, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                Text("پروفایل تقویم زرتشتی در انتظار بازبینی", color = Warning, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             }
         }
         InfoCard("درباره تاریخ‌های زرتشتی", catalog.calendarReviewMessage())
@@ -267,7 +279,7 @@ private fun CalendarOverview(catalog: AppCatalog) {
 
 @Composable
 private fun InfoCard(title: String, message: String) {
-    Surface(shape = RoundedCornerShape(20.dp), color = SurfaceColor) {
+    Surface(shape = RoundedCornerShape(21.dp), color = RaisedSurface) {
         Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(title, color = TextColor, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
             Text(message, color = MutedColor, fontSize = 13.sp, lineHeight = 21.sp)

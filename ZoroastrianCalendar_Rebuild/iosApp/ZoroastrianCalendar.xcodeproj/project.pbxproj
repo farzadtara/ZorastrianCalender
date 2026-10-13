@@ -8,6 +8,9 @@
 /* Begin PBXBuildFile section */
 		A10000000000000000000001 /* ZoroastrianCalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* ZoroastrianCalendarApp.swift */; };
 		A10000000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* ContentView.swift */; };
+		A10000000000000000000003 /* shabnam_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* shabnam_regular.ttf */; };
+		A10000000000000000000004 /* shabnam_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000006 /* shabnam_bold.ttf */; };
+		A10000000000000000000005 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* OFL.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -15,6 +18,9 @@
 		B10000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B10000000000000000000003 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B10000000000000000000004 /* ZoroastrianCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZoroastrianCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10000000000000000000005 /* shabnam_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "../sharedUI/src/commonMain/composeResources/font/shabnam_regular.ttf"; sourceTree = "<group>"; };
+		B10000000000000000000006 /* shabnam_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "../sharedUI/src/commonMain/composeResources/font/shabnam_bold.ttf"; sourceTree = "<group>"; };
+		B10000000000000000000007 /* OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "../sharedUI/src/commonMain/composeResources/files/fonts/OFL.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +42,9 @@
 				B10000000000000000000001 /* ZoroastrianCalendarApp.swift */,
 				B10000000000000000000002 /* ContentView.swift */,
 				B10000000000000000000003 /* Info.plist */,
+				B10000000000000000000005 /* shabnam_regular.ttf */,
+				B10000000000000000000006 /* shabnam_bold.ttf */,
+				B10000000000000000000007 /* OFL.txt */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -88,7 +97,11 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C10000000000000000000004 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		C10000000000000000000004 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
+			A10000000000000000000003 /* shabnam_regular.ttf in Resources */,
+			A10000000000000000000004 /* shabnam_bold.ttf in Resources */,
+			A10000000000000000000005 /* OFL.txt in Resources */,
+		); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */

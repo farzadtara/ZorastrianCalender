@@ -1,4 +1,4 @@
-const CACHE_NAME = "zoro-calendar-prototype-v5";
+const CACHE_NAME = "zoro-calendar-prototype-v6";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -6,6 +6,9 @@ const APP_FILES = [
   "./app.js",
   "./manifest.webmanifest",
   "./icon.svg",
+  "../sharedUI/src/commonMain/composeResources/font/shabnam_regular.ttf",
+  "../sharedUI/src/commonMain/composeResources/font/shabnam_bold.ttf",
+  "../sharedUI/src/commonMain/composeResources/files/fonts/OFL.txt",
   "../data/legacy/zoroastrian_events.json",
 ];
 
