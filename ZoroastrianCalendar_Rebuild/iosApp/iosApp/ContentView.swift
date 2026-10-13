@@ -10,7 +10,7 @@ private let textMuted = Color(red: 181.0 / 255, green: 192.0 / 255, blue: 185.0 
 
 struct ContentView: View {
     private let catalog = AppCatalog()
-    @State private var selectedID = "calendar"
+    @SceneStorage("selectedCalendarSection") private var selectedID = "calendar"
     @State private var drawerPresented = false
     @State private var showExitMessage = false
 
@@ -99,6 +99,8 @@ struct ContentView: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(item.title)
+                .accessibilityHint("نمایش بخش \(item.title)")
                 .accessibilityAddTraits(selectedID == item.id ? .isSelected : [])
             }
         }
@@ -196,6 +198,7 @@ private struct DrawerView: View {
                             .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel(item.title)
                         .accessibilityAddTraits(item.id == selectedID ? .isSelected : [])
                     }
                 }
