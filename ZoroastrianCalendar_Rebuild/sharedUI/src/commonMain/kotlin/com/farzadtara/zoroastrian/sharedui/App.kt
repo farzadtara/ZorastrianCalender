@@ -24,6 +24,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.Typography
@@ -66,7 +67,11 @@ private val Accent = Color(0xFF83E2C2)
 private val Warning = Color(0xFFE5BC68)
 
 @Composable
-fun App() {
+fun App(
+    sunriseReminderEnabled: Boolean = false,
+    sunriseReminderStatus: String = "یادآوری روزانه هنگام طلوع آفتاب",
+    onSunriseReminderToggle: (Boolean) -> Unit = {},
+) {
     val catalog = remember { AppCatalog() }
     val menuItems = remember { catalog.menuItems() }
     val shabnam = FontFamily(
@@ -153,6 +158,9 @@ fun App() {
                     ScreenContent(
                         destination = selectedID,
                         catalog = catalog,
+                        sunriseReminderEnabled = sunriseReminderEnabled,
+                        sunriseReminderStatus = sunriseReminderStatus,
+                        onSunriseReminderToggle = onSunriseReminderToggle,
                         modifier = Modifier.fillMaxSize().padding(padding),
                     )
                 }
@@ -233,7 +241,14 @@ private fun BottomNavigation(selectedID: String, onSelect: (String) -> Unit) {
 }
 
 @Composable
-private fun ScreenContent(destination: String, catalog: AppCatalog, modifier: Modifier = Modifier) {
+private fun ScreenContent(
+    destination: String,
+    catalog: AppCatalog,
+    sunriseReminderEnabled: Boolean,
+    sunriseReminderStatus: String,
+    onSunriseReminderToggle: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(
         modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
@@ -244,11 +259,45 @@ private fun ScreenContent(destination: String, catalog: AppCatalog, modifier: Mo
                 "events" -> InfoCard("مناسبت‌ها", "محتوای قدیمی موجود است، اما قواعد تکرار و تاریخ‌های آینده هنوز تأیید نشده‌اند.")
                 "converter" -> InfoCard("تبدیل تاریخ", "مبدل پس از انتخاب و بررسی قواعد تقویم در بخش مشترک فعال می‌شود.")
                 "qibla" -> InfoCard("قبله‌نما", "برای این ابزار، دسترسی مکان فقط پس از درخواست و اجازه شما استفاده خواهد شد.")
-                "settings" -> InfoCard("تنظیمات", "زبان، شیوه رقم‌ها، رنگ‌بندی، شروع هفته و یادآورها در این بخش قرار می‌گیرند.")
+                "settings" -> SettingsScreen(sunriseReminderEnabled, sunriseReminderStatus, onSunriseReminderToggle)
                 "about" -> InfoCard("درباره", "نسخه آغازین برنامه زرتشتی؛ تقویم دینی تا زمان تأیید قواعد، غیرفعال است.")
                 else -> CalendarOverview(catalog)
             }
         }
+    }
+}
+
+@Composable
+private fun SettingsScreen(
+    sunriseReminderEnabled: Boolean,
+    sunriseReminderStatus: String,
+    onSunriseReminderToggle: (Boolean) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+        Text("یادآورها", color = MutedColor, fontSize = 13.sp)
+        Surface(shape = RoundedCornerShape(21.dp), color = RaisedSurface) {
+            Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text("یادآوری هنگام طلوع آفتاب", color = TextColor, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                        Text(sunriseReminderStatus, color = MutedColor, fontSize = 12.sp, lineHeight = 19.sp)
+                    }
+                    Switch(
+                        checked = sunriseReminderEnabled,
+                        onCheckedChange = onSunriseReminderToggle,
+                        modifier = Modifier.semantics { contentDescription = "یادآوری روزانه هنگام طلوع آفتاب" },
+                    )
+                }
+            }
+        }
+        InfoCard(
+            "درباره این یادآوری",
+            "پس از فعال‌سازی، مکان فقط یک‌بار و هنگام استفاده از برنامه برای محاسبه طلوع گرفته و روی دستگاه ذخیره می‌شود. اعلان روزانه شما را به بررسی تقویم دعوت می‌کند؛ نام و تاریخ رویدادهای زرتشتی تا زمان بازبینی قواعد تقویم نمایش داده نمی‌شوند.",
+        )
     }
 }
 

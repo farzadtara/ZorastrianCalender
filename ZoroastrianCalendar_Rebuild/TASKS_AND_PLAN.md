@@ -256,6 +256,8 @@ The current browser prototype does not close P03-01 or P03-02. The native KMP pr
 
 **Purpose:** make reminders useful, transparent, and consistent with the chosen date policy.
 
+**Implementation note (2026-10-13):** an opt-in “every sunrise” reminder slice is present in the Android and iOS Settings screens. It uses a one-time foreground location fix and a shared approximate sunrise calculation; notification copy asks users to open the calendar and does not name unreviewed events. Android re-arms an inexact alarm after delivery and system time/device restart changes. iOS schedules 30 days and refreshes on foreground entry. Phase 07 remains open: reviewed occurrence-driven reminder intents, exact permission/capacity states, route handling, broader reconciliation, and device evidence are outstanding. See [REMINDERS.md](docs/REMINDERS.md).
+
 - [ ] **P07-01** Create a shared reminder-intent model for Nabur/category/event selection, lead time, preferred local time, quiet hours, and time-zone policy.
 - [ ] **P07-02** Define scheduling rules for multi-day events: once before the range by default; daily reminders only when explicitly enabled. Specify collision/quiet-hour behavior.
 - [ ] **P07-03** Implement native notification authorization, Android channels and denied states, and iOS authorization states. Calendar use remains available without notification permission.

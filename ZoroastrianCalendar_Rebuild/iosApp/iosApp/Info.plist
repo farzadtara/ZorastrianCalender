@@ -25,6 +25,8 @@
 		<string>shabnam_regular.ttf</string>
 		<string>shabnam_bold.ttf</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>برای زمان‌بندی یادآوری روزانه هنگام طلوع آفتاب، مکان فقط هنگام استفاده از برنامه دریافت می‌شود.</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UIUserInterfaceStyle</key>

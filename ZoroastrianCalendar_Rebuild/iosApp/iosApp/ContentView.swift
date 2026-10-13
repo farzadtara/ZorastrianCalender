@@ -1,5 +1,8 @@
 import SwiftUI
 import SharedLogic
+import CoreLocation
+import UserNotifications
+import Combine
 
 private let pageBackground = Color(red: 16.0 / 255, green: 24.0 / 255, blue: 23.0 / 255)
 private let cardBackground = Color(red: 23.0 / 255, green: 35.0 / 255, blue: 31.0 / 255)
@@ -10,6 +13,7 @@ private let textMuted = Color(red: 181.0 / 255, green: 192.0 / 255, blue: 185.0 
 
 struct ContentView: View {
     private let catalog = AppCatalog()
+    @ObservedObject var sunriseReminder: SunriseReminderManager
     @SceneStorage("selectedCalendarSection") private var selectedID = "calendar"
     @State private var drawerPresented = false
     @State private var showExitMessage = false
@@ -118,9 +122,37 @@ struct ContentView: View {
         case "events": infoCard("مناسبت‌ها", "محتوای قدیمی موجود است، اما قواعد تکرار و تاریخ‌های آینده هنوز تأیید نشده‌اند.")
         case "converter": infoCard("تبدیل تاریخ", "مبدل پس از انتخاب و بررسی قواعد تقویم در بخش مشترک فعال می‌شود.")
         case "qibla": infoCard("قبله‌نما", "برای این ابزار، دسترسی مکان فقط پس از درخواست و اجازه شما استفاده خواهد شد.")
-        case "settings": infoCard("تنظیمات", "زبان، شیوه رقم‌ها، رنگ‌بندی، شروع هفته و یادآورها در این بخش قرار می‌گیرند.")
+        case "settings": settingsPage
         case "about": infoCard("درباره", "نسخه آغازین برنامه زرتشتی؛ تقویم دینی تا زمان تأیید قواعد، غیرفعال است.")
         default: calendarPage
+        }
+    }
+
+    private var settingsPage: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("یادآورها").shabnam(15, relativeTo: .subheadline).foregroundStyle(textMuted)
+            VStack(alignment: .leading, spacing: 12) {
+                Toggle(isOn: Binding(
+                    get: { sunriseReminder.enabled },
+                    set: { sunriseReminder.setEnabled($0) }
+                )) {
+                    Text("یادآوری هنگام طلوع آفتاب")
+                        .shabnam(17, relativeTo: .headline, weight: .bold)
+                        .foregroundStyle(textPrimary)
+                }
+                .tint(teal)
+                Text(sunriseReminder.status)
+                    .shabnam(14, relativeTo: .subheadline)
+                    .foregroundStyle(textMuted)
+                    .lineSpacing(5)
+            }
+            .padding(18)
+            .background(raisedBackground, in: RoundedRectangle(cornerRadius: 21))
+            Text("پس از فعال‌سازی، مکان فقط یک‌بار و هنگام استفاده از برنامه برای محاسبه طلوع گرفته و روی دستگاه ذخیره می‌شود. اعلان روزانه شما را به بررسی تقویم دعوت می‌کند؛ نام و تاریخ رویدادهای زرتشتی تا زمان بازبینی قواعد تقویم نمایش داده نمی‌شوند.")
+                .shabnam(15, relativeTo: .body)
+                .foregroundStyle(textMuted)
+                .lineSpacing(7)
+                .padding(.horizontal, 4)
         }
     }
 
@@ -238,5 +270,232 @@ private extension View {
     func shabnam(_ size: CGFloat, relativeTo style: Font.TextStyle = .body, weight: Font.Weight = .regular) -> some View {
         let name = weight == .bold ? "Shabnam-Bold" : "Shabnam"
         return font(.custom(name, size: size, relativeTo: style))
+    }
+}
+
+final class SunriseReminderManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    @Published private(set) var enabled = UserDefaults.standard.bool(forKey: "sunriseReminderEnabled")
+    @Published private(set) var status = "یادآوری روزانه هنگام طلوع آفتاب"
+
+    private let locationManager = CLLocationManager()
+    private let notificationCenter = UNUserNotificationCenter.current()
+    private var enabling = false
+    private var refreshing = false
+
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        if enabled { status = "یادآوری طلوع آفتاب فعال است." }
+    }
+
+    func setEnabled(_ requested: Bool) {
+        guard requested != enabled else { return }
+        guard requested else {
+            enabling = false
+            refreshing = false
+            enabled = false
+            UserDefaults.standard.set(false, forKey: "sunriseReminderEnabled")
+            UserDefaults.standard.removeObject(forKey: "sunriseLatitude")
+            UserDefaults.standard.removeObject(forKey: "sunriseLongitude")
+            removeScheduledRequests()
+            status = "یادآوری طلوع آفتاب خاموش است."
+            return
+        }
+
+        enabling = true
+        status = "برای فعال‌سازی یادآوری، اجازه اعلان و مکان را بررسی کنید."
+        notificationCenter.requestAuthorization(options: [.alert, .sound]) { [weak self] granted, _ in
+            DispatchQueue.main.async {
+                guard let self, self.enabling else { return }
+                guard granted else {
+                    self.failEnable("برای نمایش یادآوری، اجازه اعلان‌ها را فعال کنید.")
+                    return
+                }
+                self.requestLocationForEnable()
+            }
+        }
+    }
+
+    func refreshIfEnabled() {
+        guard enabled else { return }
+        notificationCenter.getNotificationSettings { [weak self] settings in
+            guard let self else { return }
+            let authorized = settings.authorizationStatus == .authorized ||
+                settings.authorizationStatus == .provisional ||
+                settings.authorizationStatus == .ephemeral
+            DispatchQueue.main.async {
+                guard self.enabled else { return }
+                guard authorized, settings.alertSetting == .enabled else {
+                    self.status = "اعلان‌ها برای برنامه خاموش‌اند؛ آن‌ها را در تنظیمات دستگاه فعال کنید."
+                    return
+                }
+                switch self.locationManager.authorizationStatus {
+                case .authorizedAlways, .authorizedWhenInUse:
+                    self.refreshing = true
+                    self.locationManager.requestLocation()
+                default:
+                    self.scheduleUsingSavedLocation()
+                }
+            }
+        }
+    }
+
+    private func requestLocationForEnable() {
+        switch locationManager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
+            locationManager.requestLocation()
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        default:
+            failEnable("برای محاسبه زمان طلوع، اجازه مکان را فعال کنید.")
+        }
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        guard enabling else { return }
+        switch manager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
+            manager.requestLocation()
+        case .denied, .restricted:
+            failEnable("برای محاسبه زمان طلوع، اجازه مکان را فعال کنید.")
+        case .notDetermined:
+            break
+        @unknown default:
+            failEnable("وضعیت دسترسی مکان مشخص نیست.")
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last, location.horizontalAccuracy >= 0 else {
+            if enabling { failEnable("مکان دستگاه در دسترس نیست؛ دوباره تلاش کنید.") }
+            else if refreshing { refreshing = false; scheduleUsingSavedLocation() }
+            return
+        }
+        if enabling {
+            enabling = false
+            enabled = true
+            UserDefaults.standard.set(true, forKey: "sunriseReminderEnabled")
+            UserDefaults.standard.set(location.coordinate.latitude, forKey: "sunriseLatitude")
+            UserDefaults.standard.set(location.coordinate.longitude, forKey: "sunriseLongitude")
+            scheduleHorizon(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        } else if refreshing {
+            refreshing = false
+            UserDefaults.standard.set(location.coordinate.latitude, forKey: "sunriseLatitude")
+            UserDefaults.standard.set(location.coordinate.longitude, forKey: "sunriseLongitude")
+            scheduleHorizon(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        if enabling { failEnable("دریافت مکان ناموفق بود؛ اجازه مکان را بررسی و دوباره تلاش کنید.") }
+        else if refreshing { refreshing = false; scheduleUsingSavedLocation() }
+    }
+
+    private func failEnable(_ message: String) {
+        enabling = false
+        enabled = false
+        UserDefaults.standard.set(false, forKey: "sunriseReminderEnabled")
+        status = message
+    }
+
+    private func scheduleUsingSavedLocation() {
+        let defaults = UserDefaults.standard
+        guard defaults.object(forKey: "sunriseLatitude") != nil,
+              defaults.object(forKey: "sunriseLongitude") != nil else {
+            status = "مکان ذخیره‌شده پیدا نشد؛ یادآوری را دوباره فعال کنید."
+            return
+        }
+        scheduleHorizon(
+            latitude: defaults.double(forKey: "sunriseLatitude"),
+            longitude: defaults.double(forKey: "sunriseLongitude")
+        )
+    }
+
+    private func scheduleHorizon(latitude: Double, longitude: Double) {
+        let localCalendar = Calendar(identifier: .gregorian)
+        let utcCalendar = Calendar(identifier: .gregorian)
+        let zone = TimeZone.current
+        var local = localCalendar
+        local.timeZone = zone
+        var utc = utcCalendar
+        utc.timeZone = TimeZone(secondsFromGMT: 0)!
+
+        var dates: [(String, Date)] = []
+        let today = local.startOfDay(for: Date())
+        let calculator = SunriseCalculator()
+        for offset in 0..<90 where dates.count < 30 {
+            guard let localDay = local.date(byAdding: .day, value: offset, to: today),
+                  let localNoon = local.date(bySettingHour: 12, minute: 0, second: 0, of: localDay) else { continue }
+            let utcParts = utc.dateComponents([.year, .month, .day], from: localNoon)
+            guard let year = utcParts.year, let month = utcParts.month, let day = utcParts.day else { continue }
+            let seconds = calculator.sunriseEpochSeconds(
+                year: Int32(year), month: Int32(month), day: Int32(day),
+                latitude: latitude, longitude: longitude
+            )
+            guard seconds.isFinite else { continue }
+            let sunrise = Date(timeIntervalSince1970: seconds)
+            guard sunrise > Date().addingTimeInterval(30) else { continue }
+            let parts = local.dateComponents([.year, .month, .day], from: sunrise)
+            guard let y = parts.year, let m = parts.month, let d = parts.day else { continue }
+            dates.append(("sunrise-\(y)-\(m)-\(d)", sunrise))
+        }
+
+        guard !dates.isEmpty else {
+            removePendingSunriseRequests()
+            status = "برای مکان فعلی زمان طلوع محاسبه نشد؛ در نواحی قطبی ممکن است طلوع روزانه نباشد."
+            return
+        }
+
+        notificationCenter.getPendingNotificationRequests { [weak self] requests in
+            guard let self, self.enabled else { return }
+            let oldIDs = requests.map(\.identifier).filter { $0.hasPrefix("sunrise-") }
+            self.notificationCenter.removePendingNotificationRequests(withIdentifiers: oldIDs)
+            let queue = DispatchQueue(label: "sunrise.notification.scheduling")
+            var remaining = dates.count
+            var failures = 0
+            for (identifier, date) in dates {
+                var components = local.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+                components.calendar = local
+                components.timeZone = zone
+                let content = UNMutableNotificationContent()
+                content.title = "گاه‌شمار زرتشتی"
+                content.body = "برای دیدن وضعیت امروز در تقویم زرتشتی، برنامه را باز کنید."
+                content.sound = .default
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                self.notificationCenter.add(request) { error in
+                    queue.async {
+                        if error != nil { failures += 1 }
+                        remaining -= 1
+                        if remaining == 0 {
+                            DispatchQueue.main.async {
+                                self.status = failures == 0
+                                    ? "یادآوری طلوع برای ۳۰ روز آینده زمان‌بندی شد؛ با بازکردن برنامه زمان‌بندی تمدید می‌شود."
+                                    : "\(dates.count - failures) یادآوری از ۳۰ روز آینده زمان‌بندی شد؛ وضعیت اعلان‌ها را بررسی کنید."
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private func removeScheduledRequests() {
+        removePendingSunriseRequests()
+        notificationCenter.getDeliveredNotifications { [weak self] notifications in
+            guard let self else { return }
+            self.notificationCenter.removeDeliveredNotifications(
+                withIdentifiers: notifications.map(\.request.identifier).filter { $0.hasPrefix("sunrise-") }
+            )
+        }
+    }
+
+    private func removePendingSunriseRequests() {
+        notificationCenter.getPendingNotificationRequests { [weak self] requests in
+            guard let self else { return }
+            self.notificationCenter.removePendingNotificationRequests(
+                withIdentifiers: requests.map(\.identifier).filter { $0.hasPrefix("sunrise-") }
+            )
+        }
     }
 }
